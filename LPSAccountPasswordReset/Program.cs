@@ -29,19 +29,27 @@ namespace LPSAccountPasswordReset
                 Console.WriteLine("新密码不超过 6 位！");
                 return;
             }
-            using (WebClient client = new WebClient())
+            try
             {
-                client.Proxy = null;
-                client.Encoding = Encoding.UTF8;
-                JObject valiCodeJson = JObject.Parse(client.DownloadString($"http://www.lepeisheng.net:38034/ios/v1_0/validatecode.aspx?accountcode={phoneNum}"));
-                Console.WriteLine($"{valiCodeJson["Message"]}");
-                string code = valiCodeJson["obj"]["ValiCode"].Value<string>();
-                Console.WriteLine($"验证码为：{code}");
-                string base64pwd = Convert.ToBase64String(Encoding.ASCII.GetBytes(newPwd));
-                JObject modPwdResult = JObject.Parse(client.DownloadString($"http://www.lepeisheng.net:38034/ios/v1_0/pwd_reset.aspx?accid={phoneNum}&flag=forgot&newpwd={base64pwd}&valicode={code}"));
-                Console.WriteLine($"{modPwdResult["Message"]}");
+                using (WebClient client = new WebClient())
+                {
+                    client.Proxy = null;
+                    client.Encoding = Encoding.UTF8;
+                    JObject valiCodeJson = JObject.Parse(client.DownloadString($"http://www.lepeisheng.net:38034/ios/v1_0/validatecode.aspx?accountcode={phoneNum}"));
+                    Console.WriteLine($"{valiCodeJson["Message"]}");
+                    string code = valiCodeJson["obj"]["ValiCode"].Value<string>();
+                    Console.WriteLine($"验证码为：{code}");
+                    string base64pwd = Convert.ToBase64String(Encoding.ASCII.GetBytes(newPwd));
+                    JObject modPwdResult = JObject.Parse(client.DownloadString($"http://www.lepeisheng.net:38034/ios/v1_0/pwd_reset.aspx?accid={phoneNum}&flag=forgot&newpwd={base64pwd}&valicode={code}"));
+                    Console.WriteLine($"{modPwdResult["Message"]}");
+                }
             }
-
+            catch(Exception e)
+            {
+                Console.WriteLine($"{e.Message}");
+            }
+            Console.WriteLine("按任意键退出...");
+            Console.ReadKey(true);
         }
     }
 }
