@@ -13,7 +13,8 @@ namespace LPSAccountPasswordReset
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("将会发送验证短信至指定手机号，但无需获取验证码，系统会自动获得");
+            Console.WriteLine("t123yh 制作");
+            Console.WriteLine("将会发送验证短信至指定手机号，但无需获取验证码，系统会自动获得。");
             Console.Write("手机号：");
             string phoneNum = Console.ReadLine();
             Console.Write("新密码：");
